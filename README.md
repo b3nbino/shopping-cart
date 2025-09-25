@@ -1,3 +1,5 @@
+Note: this project comes from this directory: https://github.com/launchschool/shopping_cart_solution-ts/
+
 # Shopping Cart App
 
 ## Setup
