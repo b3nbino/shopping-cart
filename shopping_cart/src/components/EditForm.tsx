@@ -1,6 +1,6 @@
 import type React from "react";
 import type { UpdatedProduct } from "../types/index";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface EditFormProps {
   id: string;
@@ -22,6 +22,10 @@ export default function EditForm({
   const [updatedTitle, setUpdatedTitle] = useState(title);
   const [updatedQuantity, setUpdatedQuantity] = useState(String(quantity));
   const [updatedPrice, setUpdatedPrice] = useState(String(price));
+
+  useEffect(() => {
+    setUpdatedQuantity(String(quantity));
+  }, [quantity]);
 
   function onUpdateProduct(event: React.SyntheticEvent<Element, Event>) {
     event.preventDefault();

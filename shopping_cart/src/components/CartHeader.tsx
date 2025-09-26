@@ -25,14 +25,20 @@ export default function CartHeader({ cart, handleCheckout }: CartHeaderProps) {
             </tr>
           </thead>
           <tbody>
-            {cart.map((item) => (
-              <CartItem
-                key={item.productId}
-                title={item.title}
-                quantity={item.quantity}
-                price={item.price}
-              ></CartItem>
-            ))}
+            {cart.length > 0 ? (
+              cart.map((item) => (
+                <CartItem
+                  key={item.productId}
+                  title={item.title}
+                  quantity={item.quantity}
+                  price={item.price}
+                ></CartItem>
+              ))
+            ) : (
+              <tr>
+                <td>Cart empty</td>
+              </tr>
+            )}
           </tbody>
           <tfoot>
             <tr>
