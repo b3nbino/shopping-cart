@@ -1,5 +1,5 @@
-import type CartedProduct from "../types/CartedProduct";
-import type Product from "../types/Product";
+import type { CartedProduct } from "../types/index";
+import type { Product } from "../types/index";
 
 export const mockProducts: Product[] = [
   {
