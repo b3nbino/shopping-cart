@@ -1,7 +1,7 @@
 import "./index.css";
 import CartHeader from "./components/CartHeader";
 import EditableProductListing from "./components/EditableProductListing";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import type { CartedProduct } from "./types";
 import { addToCart, checkoutCart, getCart } from "./services/cart";
 import type {
@@ -17,9 +17,23 @@ import {
   updateProduct,
 } from "./services/products";
 
+function productsReducer(
+  currProducts: ProductType[],
+  actions: ProductType[] | ((currProducts: ProductType[]) => ProductType[])
+) {
+  return typeof actions === "function" ? actions(currProducts) : actions;
+}
+
+function cartReducer(
+  currCart: CartedProduct[],
+  actions: CartedProduct[] | ((currCart: CartedProduct[]) => CartedProduct[])
+) {
+  return typeof actions === "function" ? actions(currCart) : actions;
+}
+
 function App() {
-  const [cart, setCart] = useState<CartedProduct[]>([]);
-  const [products, setProducts] = useState<ProductType[]>([]);
+  const [cart, setCart] = useReducer(cartReducer, []);
+  const [products, setProducts] = useReducer(productsReducer, []);
 
   // Set cart to reflect database
   useEffect(() => {
