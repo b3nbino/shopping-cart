@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Product from "./Product";
 import EditForm from "./EditForm";
 import type { UpdatedProduct } from "../types/index";
+import { ThemeContext } from "../providers/ThemeContext";
 
 interface EditableProductProps {
   id: string;
@@ -23,9 +24,10 @@ export default function EditableProduct({
   handleAddToCart,
 }: EditableProductProps) {
   const [isFormShown, setIsFormShown] = useState<boolean>(false);
+  const { theme } = useContext(ThemeContext);
 
   return (
-    <li className="product">
+    <li className={"product" + " " + theme}>
       <Product
         id={id}
         title={title}

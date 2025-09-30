@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import EditableProduct from "./EditableProduct";
 import AddForm from "./AddForm";
 import type {
@@ -8,6 +8,7 @@ import type {
 } from "../types/index";
 import type { SortingOptions as SortingOptionsType } from "../types/index";
 import SortingOptions from "./SortingOptions";
+import { ThemeContext } from "../providers/ThemeContext";
 
 interface EditableProductListingProps {
   products: ProductType[];
@@ -29,11 +30,12 @@ export default function EditableProductListing({
   setSortBy,
 }: EditableProductListingProps) {
   const [isAddFormShown, setIsAddFormShown] = useState<boolean>(false);
+  const { theme } = useContext(ThemeContext);
 
   return (
-    <main>
+    <main className={theme}>
       <div className="product-listing">
-        <div className="products-header">
+        <div className={"products-header" + " " + theme}>
           <h2>Products</h2>
           <SortingOptions
             sortBy={sortBy}
@@ -57,7 +59,7 @@ export default function EditableProductListing({
       </div>
       {!isAddFormShown ? (
         <button
-          className="add-product-button"
+          className={"add-product-button" + " " + theme}
           onClick={() => setIsAddFormShown(true)}
         >
           Add A Product

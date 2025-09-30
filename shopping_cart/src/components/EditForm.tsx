@@ -1,6 +1,7 @@
 import type React from "react";
 import type { UpdatedProduct } from "../types/index";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ThemeContext } from "../providers/ThemeContext";
 
 interface EditFormProps {
   id: string;
@@ -22,6 +23,7 @@ export default function EditForm({
   const [updatedTitle, setUpdatedTitle] = useState(title);
   const [updatedQuantity, setUpdatedQuantity] = useState(String(quantity));
   const [updatedPrice, setUpdatedPrice] = useState(String(price));
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     setUpdatedQuantity(String(quantity));
@@ -38,7 +40,7 @@ export default function EditForm({
   }
 
   return (
-    <div className="edit-form">
+    <div className={"edit-form" + " " + theme}>
       <h3>Edit Product</h3>
       <form onSubmit={onUpdateProduct}>
         <div className="input-group">
@@ -74,7 +76,7 @@ export default function EditForm({
           />
         </div>
 
-        <div className="actions form-actions">
+        <div className={"actions form-actions" + " " + theme}>
           <button type="submit">Update</button>
           <button type="button" onClick={() => setIsFormShown(false)}>
             Cancel

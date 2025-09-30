@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import type { SortingOptions as SortingOptionsType } from "../types";
+import { ThemeContext } from "../providers/ThemeContext";
 
 interface SortingOptionsProps {
   sortBy: SortingOptionsType;
@@ -9,6 +11,8 @@ export default function SortingOptions({
   sortBy,
   setSortBy,
 }: SortingOptionsProps) {
+  const { theme } = useContext(ThemeContext);
+
   function onNameSort() {
     if (sortBy === "NAME_ASCENDING") {
       setSortBy("NAME_DESCENDING");
@@ -38,7 +42,7 @@ export default function SortingOptions({
       <span>Sort By: </span>
       <button
         onClick={onNameSort}
-        className={sortBy.includes("NAME") ? "selected" : ""}
+        className={(sortBy.includes("NAME") ? "selected" : "") + " " + theme}
       >
         Name{" "}
         {sortBy.includes("NAME")
@@ -49,7 +53,7 @@ export default function SortingOptions({
       </button>
       <button
         onClick={onPriceSort}
-        className={sortBy.includes("PRICE") ? "selected" : ""}
+        className={(sortBy.includes("PRICE") ? "selected" : "") + " " + theme}
       >
         Price{" "}
         {sortBy.includes("PRICE")
@@ -60,7 +64,9 @@ export default function SortingOptions({
       </button>
       <button
         onClick={onQuantitySort}
-        className={sortBy.includes("QUANTITY") ? "selected" : ""}
+        className={
+          (sortBy.includes("QUANTITY") ? "selected" : "") + " " + theme
+        }
       >
         Quantity{" "}
         {sortBy.includes("QUANTITY")

@@ -1,4 +1,6 @@
 import type React from "react";
+import { useContext } from "react";
+import { ThemeContext } from "../providers/ThemeContext";
 
 interface ProductProps {
   id: string;
@@ -21,6 +23,8 @@ export default function Product({
   setIsFormShown,
   handleAddToCart,
 }: ProductProps) {
+  const { theme } = useContext(ThemeContext);
+
   function onDeleteProduct(event: React.SyntheticEvent<Element, Event>) {
     event.preventDefault();
     handleDeleteProduct(id);
@@ -34,14 +38,14 @@ export default function Product({
   return (
     <div className="product-details">
       <h3>{title}</h3>
-      <p className="price">${price}</p>
+      <p className={"price" + " " + theme}>${price}</p>
       <p className="quantity">{quantity} left in stock</p>
       <div className="actions product-actions">
-        <button className="add-to-cart" onClick={onAddToCart}>
+        <button className={"add-to-cart" + " " + theme} onClick={onAddToCart}>
           Add to Cart
         </button>
         <button
-          className="edit"
+          className={"edit" + " " + theme}
           onClick={() => (setIsFormShown ? setIsFormShown(!isFormShown) : null)}
         >
           Edit

@@ -1,6 +1,7 @@
 import type React from "react";
 import type { NewProduct } from "../types/index";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ThemeContext } from "../providers/ThemeContext";
 
 interface AddFormProps {
   setIsAddFormShown: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,6 +15,7 @@ export default function AddForm({
   const [title, setTitle] = useState("");
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
+  const { theme } = useContext(ThemeContext);
 
   function handleReset() {
     setTitle("");
@@ -35,7 +37,7 @@ export default function AddForm({
   }
 
   return (
-    <div className="add-form">
+    <div className={"add-form" + " " + theme}>
       <form onSubmit={onAddProduct}>
         <div className="input-group">
           <label htmlFor="product-name">Product Name:</label>
