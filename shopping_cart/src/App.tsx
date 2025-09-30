@@ -1,6 +1,4 @@
 import "./index.css";
-import CartHeader from "./components/CartHeader";
-import EditableProductListing from "./components/EditableProductListing";
 import { useEffect, useReducer } from "react";
 import { addToCart, checkoutCart, getCart } from "./services/cart";
 import {
@@ -11,6 +9,10 @@ import {
 } from "./services/products";
 import productsReducer from "./reducers/productsReducer";
 import cartReducer from "./reducers/cartReducer";
+
+// Import components
+import CartHeader from "./components/CartHeader";
+import EditableProductListing from "./components/EditableProductListing";
 
 // Import types
 import type { CartedProduct } from "./types";
@@ -60,8 +62,6 @@ function App() {
         type: "EDIT_PRODUCT",
         newProducts: product,
       });
-      // If an item was returned check if it's new. If so, add it
-      // to the car. Otherwise just increase the cart quantity
       if (item !== null) {
         dispatchCart({
           type: "ADD_TO_CART",
