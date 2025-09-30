@@ -2,14 +2,7 @@ import "./index.css";
 import CartHeader from "./components/CartHeader";
 import EditableProductListing from "./components/EditableProductListing";
 import { useEffect, useReducer } from "react";
-import type { CartedProduct } from "./types";
 import { addToCart, checkoutCart, getCart } from "./services/cart";
-import type {
-  Product as ProductType,
-  UpdatedProduct,
-  NewProduct,
-} from "./types";
-import { itemInCart } from "./utils/utils";
 import {
   addProduct,
   deleteProduct,
@@ -17,16 +10,18 @@ import {
   updateProduct,
 } from "./services/products";
 import productsReducer from "./reducers/productsReducer";
+import cartReducer from "./reducers/cartReducer";
 
-function cartReducer(
-  currCart: CartedProduct[],
-  actions: CartedProduct[] | ((currCart: CartedProduct[]) => CartedProduct[])
-) {
-  return typeof actions === "function" ? actions(currCart) : actions;
-}
+// Import types
+import type { CartedProduct } from "./types";
+import type {
+  Product as ProductType,
+  UpdatedProduct,
+  NewProduct,
+} from "./types";
 
 function App() {
-  const [cart, setCart] = useReducer(cartReducer, []);
+  const [cart, dispatchCart] = useReducer(cartReducer, []);
   const [products, dispatchProducts] = useReducer(productsReducer, []);
 
   // Set cart and products to reflect database
@@ -36,7 +31,10 @@ function App() {
         const cartItems = await getCart();
         const allProducts: ProductType[] = await getAllProducts();
 
-        setCart(cartItems);
+        dispatchCart({
+          type: "GET_CART",
+          newItems: cartItems,
+        });
         dispatchProducts({
           type: "GET_PRODUCTS",
           newProducts: allProducts,
@@ -65,21 +63,9 @@ function App() {
       // If an item was returned check if it's new. If so, add it
       // to the car. Otherwise just increase the cart quantity
       if (item !== null) {
-        setCart((prev) => {
-          let newCart;
-          if (itemInCart(item.productId, prev)) {
-            newCart = prev.map((currItem) => {
-              if (currItem.productId === item.productId) {
-                return item;
-              } else {
-                return currItem;
-              }
-            });
-          } else {
-            newCart = [...prev];
-            newCart.push(item);
-          }
-          return newCart;
+        dispatchCart({
+          type: "ADD_TO_CART",
+          newItems: item,
         });
       }
     } catch (e: unknown) {
@@ -91,7 +77,9 @@ function App() {
   async function handleCheckout() {
     try {
       await checkoutCart();
-      setCart([]);
+      dispatchCart({
+        type: "CHECKOUT",
+      });
     } catch (e: unknown) {
       console.log(e);
     }

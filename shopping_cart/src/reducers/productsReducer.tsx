@@ -15,9 +15,13 @@ export default function productsReducer(
       if (newProducts && Array.isArray(newProducts)) {
         return newProducts;
       }
-      throw new Error("Non array argument passed with get products");
+      throw new Error("Non array argument passed with get products.");
     case "ADD_PRODUCT":
-      return [...currProducts, newProducts];
+      if (currProducts[0] && newProducts && !Array.isArray(newProducts)) {
+        return [...currProducts, newProducts];
+      }
+
+      throw new Error("Invalid newProducts when adding product.");
     case "EDIT_PRODUCT":
       return currProducts.map((prod) => {
         if (
@@ -34,6 +38,6 @@ export default function productsReducer(
     case "DELETE_PRODUCT":
       return currProducts.filter((prod) => prod._id !== productId);
     default:
-      throw new Error("Unhandled type in products reducer");
+      throw new Error("Unhandled type in products reducer.");
   }
 }
