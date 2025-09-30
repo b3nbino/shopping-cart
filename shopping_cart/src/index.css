@@ -6,6 +6,10 @@ body {
   font-size: 16px;
 }
 
+body.dark {
+  background-color: #121921;
+}
+
 #app {
   width: 800px;
   margin: 20px auto 20px auto;
@@ -24,6 +28,10 @@ header {
   border-radius: 4px 4px 0 0;
 }
 
+header.dark {
+  background-color: #2c4355;
+}
+
 header h1 {
   font-family: "Rammetto One", cursive;
   font-size: 26px;
@@ -37,6 +45,10 @@ header .cart {
 
 main {
   background: #c4dfe6;
+}
+
+main.dark {
+  background-color: #1e2a3a;
 }
 
 h2 {
@@ -54,6 +66,11 @@ header h2 {
   margin: 0 0 20px 0;
   border-radius: 4px;
   position: relative;
+}
+
+.product.dark {
+  background-color: #2d3e50;
+  color: #fff;
 }
 
 h3 {
@@ -105,11 +122,19 @@ button {
   display: inline-block;
 }
 
+button.dark {
+  background-color: #3598da;
+}
+
 .checkout {
   background: #fff;
   color: #07575b;
   margin-top: 20px;
   float: right;
+}
+
+.checkout.dark {
+  color: #2c4355;
 }
 
 button:disabled {
@@ -156,6 +181,10 @@ input[type="text"] input[type="number"] {
 input[type="text"]:focus input[type="number"]:focus {
   outline: none;
   border-color: #07575b;
+}
+
+input[type="text"]:focus input[type="number"]:focus.dark {
+  border-color: #2c4355;
 }
 
 input::-webkit-outer-spin-button,
@@ -215,7 +244,40 @@ table td.total {
   background-color: #c4dfe6;
 }
 
+.products-header div button.dark {
+  margin: 0 3px;
+  color: #3598da;
+  border: 1px solid #3598da;
+  background-color: #1e2a3a;
+}
+
+.products-header div button:hover {
+  background-color: #5da8ac;
+}
+
+.products-header div button.dark:hover {
+  background-color: #85b5d4;
+}
+
 .products-header .selected {
   background-color: #07575b;
   color: #fff;
+}
+
+.products-header .selected.dark {
+  background-color: #3598da;
+}
+
+.shop-header button {
+  border: 1px solid #fff;
+  margin: 4px 0 0 24px;
+  padding-bottom: 8px;
+}
+
+.shop-header button:hover {
+  background-color: #5da8ac;
+}
+
+.shop-header button.dark:hover {
+  background-color: #4e5f6d;
 }
