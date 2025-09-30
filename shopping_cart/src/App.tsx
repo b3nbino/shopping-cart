@@ -16,13 +16,7 @@ import {
   getAllProducts,
   updateProduct,
 } from "./services/products";
-
-function productsReducer(
-  currProducts: ProductType[],
-  actions: ProductType[] | ((currProducts: ProductType[]) => ProductType[])
-) {
-  return typeof actions === "function" ? actions(currProducts) : actions;
-}
+import productsReducer from "./reducers/productsReducer";
 
 function cartReducer(
   currCart: CartedProduct[],
@@ -33,14 +27,20 @@ function cartReducer(
 
 function App() {
   const [cart, setCart] = useReducer(cartReducer, []);
-  const [products, setProducts] = useReducer(productsReducer, []);
+  const [products, dispatchProducts] = useReducer(productsReducer, []);
 
-  // Set cart to reflect database
+  // Set cart and products to reflect database
   useEffect(() => {
     try {
       (async () => {
         const cartItems = await getCart();
+        const allProducts: ProductType[] = await getAllProducts();
+
         setCart(cartItems);
+        dispatchProducts({
+          type: "GET_PRODUCTS",
+          newProducts: allProducts,
+        });
       })();
     } catch (e: unknown) {
       console.log(e);
@@ -58,15 +58,10 @@ function App() {
         productId
       );
       // Update products to reflect new product quantity
-      setProducts((prev) =>
-        prev.map((prod) => {
-          if (prod._id === productId) {
-            return product;
-          } else {
-            return prod;
-          }
-        })
-      );
+      dispatchProducts({
+        type: "EDIT_PRODUCT",
+        newProducts: product,
+      });
       // If an item was returned check if it's new. If so, add it
       // to the car. Otherwise just increase the cart quantity
       if (item !== null) {
@@ -102,23 +97,14 @@ function App() {
     }
   }
 
-  // Sets the product state to reflect the database
-  useEffect(() => {
-    (async () => {
-      try {
-        const allProducts = await getAllProducts();
-        setProducts(allProducts);
-      } catch (e: unknown) {
-        console.log(e);
-      }
-    })();
-  }, []);
-
   // Adds a new product to the database and state
   async function handleAddProduct(product: NewProduct, callback: () => void) {
     try {
-      const addedProduct: ProductType = await addProduct(product);
-      setProducts((prev) => prev.concat(addedProduct));
+      const addedProduct = await addProduct(product);
+      dispatchProducts({
+        type: "ADD_PRODUCT",
+        newProducts: addedProduct,
+      });
 
       if (callback) {
         callback();
@@ -132,7 +118,10 @@ function App() {
   async function handleDeleteProduct(productId: string) {
     try {
       await deleteProduct(productId);
-      setProducts((prev) => prev.filter((prod) => prod._id !== productId));
+      dispatchProducts({
+        type: "DELETE_PRODUCT",
+        productId,
+      });
     } catch (e: unknown) {
       console.log(e);
     }
@@ -148,15 +137,10 @@ function App() {
         productId,
         productUpdate
       );
-      setProducts((prev) =>
-        prev.map((prod) => {
-          if (prod._id === productId) {
-            return updatedProduct;
-          } else {
-            return prod;
-          }
-        })
-      );
+      dispatchProducts({
+        type: "EDIT_PRODUCT",
+        newProducts: updatedProduct,
+      });
     } catch (e: unknown) {
       console.log(e);
     }
