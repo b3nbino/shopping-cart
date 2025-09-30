@@ -6,6 +6,43 @@ interface ProductActions {
   newProducts?: ProductType[] | ProductType;
 }
 
+function sortProducts(
+  sortBy: SortingOptions,
+  products: ProductType[]
+): ProductType[] {
+  switch (sortBy) {
+    case "NAME_ASCENDING":
+      return products.sort((prodA, prodB) => {
+        if (prodA.title > prodB.title) {
+          return 1;
+        } else if (prodA.title < prodB.title) {
+          return -1;
+        }
+        return 0;
+      });
+    case "NAME_DESCENDING":
+      return products.sort((prodA, prodB) => {
+        if (prodA.title < prodB.title) {
+          return 1;
+        } else if (prodA.title > prodB.title) {
+          return -1;
+        }
+        return 0;
+      });
+    case "PRICE_ASCENDING":
+      return products.sort((prodA, prodB) => prodA.price - prodB.price);
+    case "PRICE_DESCENDING":
+      return products.sort((prodA, prodB) => prodB.price - prodA.price);
+    case "QUANTITY_ASCENDING":
+      return products.sort((prodA, prodB) => prodA.quantity - prodB.quantity);
+    case "QUANTITY_DESCENDING":
+      return products.sort((prodA, prodB) => prodB.quantity - prodA.quantity);
+
+    default:
+      throw new Error("Unhandled sorting type.");
+  }
+}
+
 export default function productsReducer(
   currProducts: ProductType[],
   actions: ProductActions
@@ -48,39 +85,5 @@ export default function productsReducer(
       throw new Error("Unhandled type in products reducer.");
   }
 
-  switch (sortBy) {
-    case "NAME_ASCENDING":
-      return sortedProducts.sort((prodA, prodB) => {
-        if (prodA.title > prodB.title) {
-          return 1;
-        } else if (prodA.title < prodB.title) {
-          return -1;
-        }
-        return 0;
-      });
-    case "NAME_DESCENDING":
-      return sortedProducts.sort((prodA, prodB) => {
-        if (prodA.title < prodB.title) {
-          return 1;
-        } else if (prodA.title > prodB.title) {
-          return -1;
-        }
-        return 0;
-      });
-    case "PRICE_ASCENDING":
-      return sortedProducts.sort((prodA, prodB) => prodA.price - prodB.price);
-    case "PRICE_DESCENDING":
-      return sortedProducts.sort((prodA, prodB) => prodB.price - prodA.price);
-    case "QUANTITY_ASCENDING":
-      return sortedProducts.sort(
-        (prodA, prodB) => prodA.quantity - prodB.quantity
-      );
-    case "QUANTITY_DESCENDING":
-      return sortedProducts.sort(
-        (prodA, prodB) => prodB.quantity - prodA.quantity
-      );
-
-    default:
-      throw new Error("Unhandled sorting type.");
-  }
+  return sortProducts(sortBy, sortedProducts);
 }
