@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import EditableProduct from "./EditableProduct";
 import AddForm from "./AddForm";
 import type {
@@ -6,6 +6,8 @@ import type {
   Product as ProductType,
   UpdatedProduct,
 } from "../types/index";
+import type { SortingOptions as SortingOptionsType } from "../types/index";
+import SortingOptions from "./SortingOptions";
 
 interface EditableProductListingProps {
   products: ProductType[];
@@ -13,6 +15,8 @@ interface EditableProductListingProps {
   handleDeleteProduct(id: string): void;
   handleUpdateProduct(id: string, productUpdate: UpdatedProduct): void;
   handleAddProduct(product: NewProduct, callback: () => void): void;
+  sortBy: SortingOptionsType;
+  setSortBy: React.Dispatch<React.SetStateAction<SortingOptionsType>>;
 }
 
 export default function EditableProductListing({
@@ -21,13 +25,21 @@ export default function EditableProductListing({
   handleAddProduct,
   handleDeleteProduct,
   handleUpdateProduct,
+  sortBy,
+  setSortBy,
 }: EditableProductListingProps) {
   const [isAddFormShown, setIsAddFormShown] = useState<boolean>(false);
 
   return (
     <main>
       <div className="product-listing">
-        <h2>Products</h2>
+        <div className="products-header">
+          <h2>Products</h2>
+          <SortingOptions
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+          ></SortingOptions>
+        </div>
         <ul className="product-list">
           {products.map((item) => (
             <EditableProduct

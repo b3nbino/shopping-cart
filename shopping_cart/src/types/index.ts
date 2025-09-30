@@ -21,3 +21,10 @@ export type Product = z.infer<typeof productSchema>;
 export type CartedProduct = z.infer<typeof cartedProductSchema>;
 export type NewProduct = z.infer<typeof newProductSchema>;
 export type UpdatedProduct = z.infer<typeof updatedProductSchema>;
+export type SortingOptions =
+  | "NAME_ASCENDING"
+  | "NAME_DESCENDING"
+  | "PRICE_ASCENDING"
+  | "PRICE_DESCENDING"
+  | "QUANTITY_ASCENDING"
+  | "QUANTITY_DESCENDING";

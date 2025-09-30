@@ -1,5 +1,5 @@
 import "./index.css";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { addToCart, checkoutCart, getCart } from "./services/cart";
 import {
   addProduct,
@@ -15,7 +15,7 @@ import CartHeader from "./components/CartHeader";
 import EditableProductListing from "./components/EditableProductListing";
 
 // Import types
-import type { CartedProduct } from "./types";
+import type { CartedProduct, SortingOptions } from "./types";
 import type {
   Product as ProductType,
   UpdatedProduct,
@@ -25,27 +25,37 @@ import type {
 function App() {
   const [cart, dispatchCart] = useReducer(cartReducer, []);
   const [products, dispatchProducts] = useReducer(productsReducer, []);
+  const [sortBy, setSortBy] = useState<SortingOptions>("NAME_ASCENDING");
 
   // Set cart and products to reflect database
   useEffect(() => {
     try {
       (async () => {
         const cartItems = await getCart();
-        const allProducts: ProductType[] = await getAllProducts();
-
         dispatchCart({
           type: "GET_CART",
           newItems: cartItems,
-        });
-        dispatchProducts({
-          type: "GET_PRODUCTS",
-          newProducts: allProducts,
         });
       })();
     } catch (e: unknown) {
       console.log(e);
     }
   }, []);
+
+  useEffect(() => {
+    try {
+      (async () => {
+        const allProducts: ProductType[] = await getAllProducts();
+        dispatchProducts({
+          type: "GET_PRODUCTS",
+          newProducts: allProducts,
+          sortBy,
+        });
+      })();
+    } catch (e: unknown) {
+      console.log(e);
+    }
+  }, [sortBy]);
 
   // Adds an item to the cart
   async function handleAddToCart(productId: string) {
@@ -61,6 +71,7 @@ function App() {
       dispatchProducts({
         type: "EDIT_PRODUCT",
         newProducts: product,
+        sortBy,
       });
       if (item !== null) {
         dispatchCart({
@@ -92,6 +103,7 @@ function App() {
       dispatchProducts({
         type: "ADD_PRODUCT",
         newProducts: addedProduct,
+        sortBy,
       });
 
       if (callback) {
@@ -109,6 +121,7 @@ function App() {
       dispatchProducts({
         type: "DELETE_PRODUCT",
         productId,
+        sortBy,
       });
     } catch (e: unknown) {
       console.log(e);
@@ -128,6 +141,7 @@ function App() {
       dispatchProducts({
         type: "EDIT_PRODUCT",
         newProducts: updatedProduct,
+        sortBy,
       });
     } catch (e: unknown) {
       console.log(e);
@@ -143,6 +157,8 @@ function App() {
         handleDeleteProduct={handleDeleteProduct}
         handleUpdateProduct={handleUpdateProduct}
         handleAddProduct={handleAddProduct}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
       ></EditableProductListing>
     </div>
   );

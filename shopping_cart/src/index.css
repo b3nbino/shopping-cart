@@ -200,3 +200,22 @@ table td.total {
   text-align: right;
   padding-top: 20px;
 }
+
+.products-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 12px;
+}
+
+.products-header div button {
+  margin: 0 3px;
+  color: #07575b;
+  border: 1px solid #07575b;
+  background-color: #c4dfe6;
+}
+
+.products-header .selected {
+  background-color: #07575b;
+  color: #fff;
+}
