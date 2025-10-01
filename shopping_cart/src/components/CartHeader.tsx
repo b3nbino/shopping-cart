@@ -2,6 +2,7 @@ import CartItem from "./CartItem";
 import type { CartedProduct } from "../types";
 import { useContext } from "react";
 import { ThemeContext } from "../providers/ThemeContext";
+import { CurrencyConext } from "../providers/CurrencyContext";
 
 interface CartHeaderProps {
   cart: CartedProduct[];
@@ -10,6 +11,7 @@ interface CartHeaderProps {
 
 export default function CartHeader({ cart, handleCheckout }: CartHeaderProps) {
   const { theme, handleChangeTheme } = useContext(ThemeContext);
+  const { currency, handleChangeCurrency } = useContext(CurrencyConext);
 
   function onCheckout() {
     handleCheckout();
@@ -21,6 +23,9 @@ export default function CartHeader({ cart, handleCheckout }: CartHeaderProps) {
         <h1>The Shop!</h1>
         <button className={theme} onClick={handleChangeTheme}>
           {theme === "light" ? "☀️" : "🌙"}
+        </button>
+        <button className={theme} onClick={handleChangeCurrency}>
+          {currency}
         </button>
       </div>
       <div className="cart">

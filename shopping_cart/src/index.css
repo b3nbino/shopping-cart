@@ -301,10 +301,15 @@ table td.total {
   color: #fff;
 }
 
+.shop-header h1 {
+  margin-right: 24px;
+}
+
 .shop-header button {
   border: 1px solid #fff;
-  margin: 4px 0 0 24px;
+  margin: 4px 8px 0 0;
   padding-bottom: 8px;
+  height: 36px;
 }
 
 .shop-header button:hover {

@@ -1,5 +1,5 @@
 import "./index.css";
-import { useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import { addToCart, checkoutCart, getCart } from "./services/cart";
 import {
   addProduct,
@@ -21,11 +21,13 @@ import type {
   UpdatedProduct,
   NewProduct,
 } from "./types";
+import { CurrencyConext } from "./providers/CurrencyContext";
 
 function App() {
   const [cart, dispatchCart] = useReducer(cartReducer, []);
   const [products, dispatchProducts] = useReducer(productsReducer, []);
   const [sortBy, setSortBy] = useState<SortingOptions>("NAME_ASCENDING");
+  const { currency } = useContext(CurrencyConext);
 
   // Set cart and products to reflect database
   useEffect(() => {
@@ -50,12 +52,13 @@ function App() {
           type: "GET_PRODUCTS",
           newProducts: allProducts,
           sortBy,
+          currency,
         });
       })();
     } catch (e: unknown) {
       console.log(e);
     }
-  }, [sortBy]);
+  }, [sortBy, currency]);
 
   // Adds an item to the cart
   async function handleAddToCart(productId: string) {

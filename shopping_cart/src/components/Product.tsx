@@ -1,6 +1,7 @@
 import type React from "react";
 import { useContext } from "react";
 import { ThemeContext } from "../providers/ThemeContext";
+import { CurrencyConext } from "../providers/CurrencyContext";
 
 interface ProductProps {
   id: string;
@@ -24,6 +25,7 @@ export default function Product({
   handleAddToCart,
 }: ProductProps) {
   const { theme } = useContext(ThemeContext);
+  const { currency } = useContext(CurrencyConext);
 
   function onDeleteProduct(event: React.SyntheticEvent<Element, Event>) {
     event.preventDefault();
@@ -38,7 +40,10 @@ export default function Product({
   return (
     <div className="product-details">
       <h3>{title}</h3>
-      <p className={"price" + " " + theme}>${price}</p>
+      <p className={"price" + " " + theme}>
+        {currency === "USD" ? "$" : "€"}
+        {price.toFixed(2)}
+      </p>
       <p className="quantity">{quantity} left in stock</p>
       <div className="actions product-actions">
         <button className={"add-to-cart" + " " + theme} onClick={onAddToCart}>
