@@ -11,10 +11,15 @@ interface CartHeaderProps {
 
 export default function CartHeader({ cart, handleCheckout }: CartHeaderProps) {
   const { theme, handleChangeTheme } = useContext(ThemeContext);
-  const { currency, handleChangeCurrency } = useContext(CurrencyConext);
+  const { currency, handleChangeCurrency, exchangeRate } =
+    useContext(CurrencyConext);
 
   function onCheckout() {
     handleCheckout();
+  }
+
+  function calculateTotal() {
+    return cart.reduce((acc, curr) => acc + curr.price * curr.quantity, 0);
   }
 
   return (
@@ -57,10 +62,10 @@ export default function CartHeader({ cart, handleCheckout }: CartHeaderProps) {
           <tfoot>
             <tr>
               <td colSpan={3} className="total">
-                Total: $
-                {cart
-                  .reduce((acc, curr) => acc + curr.price * curr.quantity, 0)
-                  .toFixed(2)}
+                Total: {currency === "USD" ? "$" : "€"}
+                {currency === "USD"
+                  ? calculateTotal().toFixed(2)
+                  : (calculateTotal() * exchangeRate).toFixed(2)}
               </td>
             </tr>
           </tfoot>
