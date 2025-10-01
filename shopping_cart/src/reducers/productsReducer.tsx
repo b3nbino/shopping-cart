@@ -6,6 +6,7 @@ interface ProductActions {
   currency?: Currency;
   productId?: string;
   newProducts?: ProductType[] | ProductType;
+  exchangeRate?: number;
 }
 
 function sortProducts(
@@ -49,15 +50,16 @@ export default function productsReducer(
   currProducts: ProductType[],
   actions: ProductActions
 ): ProductType[] {
-  const { type, productId, newProducts, sortBy, currency } = actions;
+  const { type, productId, newProducts, sortBy, currency, exchangeRate } =
+    actions;
   let sortedProducts;
   switch (type) {
     case "GET_PRODUCTS":
       if (newProducts && Array.isArray(newProducts)) {
         sortedProducts = newProducts;
-        if (currency === "EUR") {
+        if (currency === "EUR" && exchangeRate) {
           sortedProducts.forEach((prod) => {
-            prod.price = prod.price * 0.85;
+            prod.price = prod.price * exchangeRate;
           });
         }
       } else {

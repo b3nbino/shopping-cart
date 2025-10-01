@@ -5,6 +5,7 @@ import {
   addProduct,
   deleteProduct,
   getAllProducts,
+  getExchangeRate,
   updateProduct,
 } from "./services/products";
 import productsReducer from "./reducers/productsReducer";
@@ -48,11 +49,13 @@ function App() {
     try {
       (async () => {
         const allProducts: ProductType[] = await getAllProducts();
+        const exchangeRate = await getExchangeRate();
         dispatchProducts({
           type: "GET_PRODUCTS",
           newProducts: allProducts,
           sortBy,
           currency,
+          exchangeRate,
         });
       })();
     } catch (e: unknown) {

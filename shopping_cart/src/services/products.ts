@@ -39,3 +39,8 @@ export async function updateProduct(
   console.log("Product updated.");
   return productSchema.parse(data);
 }
+
+export async function getExchangeRate() {
+  const { data } = await axios.get("https://open.er-api.com/v6/latest/USD");
+  return data.rates.EUR;
+}
