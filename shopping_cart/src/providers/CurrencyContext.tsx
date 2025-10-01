@@ -5,9 +5,11 @@ export type Currency = "USD" | "EUR";
 interface CurrencyContextType {
   currency: Currency;
   handleChangeCurrency: () => void;
+  exchangeRate: number;
 }
 
 export const CurrencyConext = createContext<CurrencyContextType>({
   currency: "USD",
   handleChangeCurrency: () => undefined,
+  exchangeRate: 1,
 });

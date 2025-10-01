@@ -1,12 +1,9 @@
-import type { Currency } from "../providers/CurrencyContext";
 import type { Product as ProductType, SortingOptions } from "../types";
 interface ProductActions {
   type: "GET_PRODUCTS" | "ADD_PRODUCT" | "EDIT_PRODUCT" | "DELETE_PRODUCT";
   sortBy: SortingOptions;
-  currency?: Currency;
   productId?: string;
   newProducts?: ProductType[] | ProductType;
-  exchangeRate?: number;
 }
 
 function sortProducts(
@@ -50,18 +47,12 @@ export default function productsReducer(
   currProducts: ProductType[],
   actions: ProductActions
 ): ProductType[] {
-  const { type, productId, newProducts, sortBy, currency, exchangeRate } =
-    actions;
+  const { type, productId, newProducts, sortBy } = actions;
   let sortedProducts;
   switch (type) {
     case "GET_PRODUCTS":
       if (newProducts && Array.isArray(newProducts)) {
         sortedProducts = newProducts;
-        if (currency === "EUR" && exchangeRate) {
-          sortedProducts.forEach((prod) => {
-            prod.price = prod.price * exchangeRate;
-          });
-        }
       } else {
         throw new Error("Non array argument passed with get products.");
       }

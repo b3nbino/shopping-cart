@@ -55,7 +55,7 @@ export default function EditForm({
         </div>
 
         <div className="input-group">
-          <label htmlFor="product-price">Price</label>
+          <label htmlFor="product-price">Price ($USD)</label>
           <input
             type="number"
             id="product-price"

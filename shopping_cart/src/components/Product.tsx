@@ -25,7 +25,11 @@ export default function Product({
   handleAddToCart,
 }: ProductProps) {
   const { theme } = useContext(ThemeContext);
-  const { currency } = useContext(CurrencyConext);
+  const { currency, exchangeRate } = useContext(CurrencyConext);
+
+  function getEuroPrice() {
+    return (price * exchangeRate).toFixed(2);
+  }
 
   function onDeleteProduct(event: React.SyntheticEvent<Element, Event>) {
     event.preventDefault();
@@ -42,7 +46,7 @@ export default function Product({
       <h3>{title}</h3>
       <p className={"price" + " " + theme}>
         {currency === "USD" ? "$" : "€"}
-        {price.toFixed(2)}
+        {currency === "USD" ? price : getEuroPrice()}
       </p>
       <p className="quantity">{quantity} left in stock</p>
       <div className="actions product-actions">
