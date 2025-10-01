@@ -7,6 +7,16 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
   const [exchangeRate, setExchangeRate] = useState(0.85);
 
   useEffect(() => {
+    const selectedCurrency = localStorage.getItem("currency");
+
+    if (selectedCurrency === "USD" || selectedCurrency === "EUR") {
+      setCurrency(selectedCurrency);
+    } else {
+      localStorage.setItem("currency", "USD");
+    }
+  }, []);
+
+  useEffect(() => {
     try {
       (async () => {
         const currRate = await getExchangeRate();
@@ -19,6 +29,12 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   function handleChangeCurrency() {
+    if (currency === "USD") {
+      localStorage.setItem("currency", "EUR");
+    } else {
+      localStorage.setItem("currency", "USD");
+    }
+
     setCurrency((prev) => (prev === "USD" ? "EUR" : "USD"));
   }
 
