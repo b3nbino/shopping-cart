@@ -1,8 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import Product from "./Product";
 import EditForm from "./EditForm";
 import type { UpdatedProduct } from "../types/index";
 import { ThemeContext } from "../providers/ThemeContext";
+import useToggle from "../hooks/useToggle";
 
 interface EditableProductProps {
   id: string;
@@ -23,7 +24,7 @@ export default function EditableProduct({
   handleUpdateProduct,
   handleAddToCart,
 }: EditableProductProps) {
-  const [isFormShown, setIsFormShown] = useState<boolean>(false);
+  const [isFormShown, toggle] = useToggle(false);
   const { theme } = useContext(ThemeContext);
 
   return (
@@ -33,8 +34,7 @@ export default function EditableProduct({
         title={title}
         quantity={quantity}
         price={price}
-        isFormShown={isFormShown}
-        setIsFormShown={setIsFormShown}
+        toggle={toggle}
         handleDeleteProduct={handleDeleteProduct}
         handleAddToCart={handleAddToCart}
       ></Product>
@@ -44,7 +44,7 @@ export default function EditableProduct({
           title={title}
           quantity={quantity}
           price={price}
-          setIsFormShown={setIsFormShown}
+          toggle={toggle}
           handleUpdateProduct={handleUpdateProduct}
         ></EditForm>
       ) : null}

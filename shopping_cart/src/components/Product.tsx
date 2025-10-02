@@ -10,8 +10,7 @@ interface ProductProps {
   quantity: number;
   handleDeleteProduct(id: string): void;
   handleAddToCart(productId: string): void;
-  isFormShown?: boolean;
-  setIsFormShown?: React.Dispatch<React.SetStateAction<boolean>>;
+  toggle: () => void;
 }
 
 export default function Product({
@@ -20,8 +19,7 @@ export default function Product({
   price,
   quantity,
   handleDeleteProduct,
-  isFormShown,
-  setIsFormShown,
+  toggle,
   handleAddToCart,
 }: ProductProps) {
   const { theme } = useContext(ThemeContext);
@@ -53,10 +51,7 @@ export default function Product({
         <button className={"add-to-cart" + " " + theme} onClick={onAddToCart}>
           Add to Cart
         </button>
-        <button
-          className={"edit" + " " + theme}
-          onClick={() => (setIsFormShown ? setIsFormShown(!isFormShown) : null)}
-        >
+        <button className={"edit" + " " + theme} onClick={toggle}>
           Edit
         </button>
       </div>

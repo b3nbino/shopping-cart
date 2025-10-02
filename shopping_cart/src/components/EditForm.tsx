@@ -8,7 +8,7 @@ interface EditFormProps {
   title: string;
   quantity: number;
   price: number;
-  setIsFormShown: React.Dispatch<React.SetStateAction<boolean>>;
+  toggle: () => void;
   handleUpdateProduct(id: string, productUpdate: UpdatedProduct): void;
 }
 
@@ -17,7 +17,7 @@ export default function EditForm({
   title,
   quantity,
   price,
-  setIsFormShown,
+  toggle,
   handleUpdateProduct,
 }: EditFormProps) {
   const [updatedTitle, setUpdatedTitle] = useState(title);
@@ -36,7 +36,7 @@ export default function EditForm({
       price: updatedPrice === "" ? undefined : Number(updatedPrice),
       quantity: updatedQuantity === "" ? undefined : Number(updatedQuantity),
     });
-    setIsFormShown(false);
+    toggle();
   }
 
   return (
@@ -78,7 +78,7 @@ export default function EditForm({
 
         <div className={"actions form-actions" + " " + theme}>
           <button type="submit">Update</button>
-          <button type="button" onClick={() => setIsFormShown(false)}>
+          <button type="button" onClick={toggle}>
             Cancel
           </button>
         </div>
