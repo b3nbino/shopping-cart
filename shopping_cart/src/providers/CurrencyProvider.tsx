@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { CurrencyConext, type Currency } from "./CurrencyContext";
+import { CurrencyConext } from "./CurrencyContext";
 import { getExchangeRate } from "../services/products";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 export function CurrencyProvider({ children }: { children: React.ReactNode }) {
-  const [currency, setCurrency] = useState<Currency>("USD");
+  const [currency, setCurrency] = useLocalStorage("currency", "USD");
   const [exchangeRate, setExchangeRate] = useState(0.85);
-
-  useEffect(() => {
-    const selectedCurrency = localStorage.getItem("currency");
-
-    if (selectedCurrency === "USD" || selectedCurrency === "EUR") {
-      setCurrency(selectedCurrency);
-    } else {
-      localStorage.setItem("currency", "USD");
-    }
-  }, []);
 
   useEffect(() => {
     try {
@@ -30,12 +21,10 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
 
   function handleChangeCurrency() {
     if (currency === "USD") {
-      localStorage.setItem("currency", "EUR");
+      setCurrency("EUR");
     } else {
-      localStorage.setItem("currency", "USD");
+      setCurrency("USD");
     }
-
-    setCurrency((prev) => (prev === "USD" ? "EUR" : "USD"));
   }
 
   return (

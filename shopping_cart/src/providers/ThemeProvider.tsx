@@ -1,27 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ThemeContext } from "./ThemeContext";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState("light");
-
-  useEffect(() => {
-    const selectedTheme = localStorage.getItem("theme");
-
-    if (selectedTheme === "light" || selectedTheme === "dark") {
-      setTheme(selectedTheme);
-    } else {
-      localStorage.setItem("theme", "light");
-    }
-  }, []);
+  const [theme, setTheme] = useLocalStorage("theme", "light");
 
   function handleChangeTheme() {
     if (theme === "light") {
-      localStorage.setItem("theme", "dark");
+      setTheme("dark");
     } else {
-      localStorage.setItem("theme", "light");
+      setTheme("light");
     }
-
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
   }
 
   return (
